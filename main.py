@@ -1,18 +1,24 @@
 import pymongo
+from course_model import Course
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["AUB"]
 majors = mydb["majors"]
 courses = mydb["courses"]
 
-cce = majors.find_one({"name": "Computer and Communication Engineering"})
-eece_course = courses.find_one({"num": '210'})
-myquery = {"name": "Electrical and Computer Engineering"}
-newvalues = cce["core"]
-newvalues[0] = eece_course["_id"]
+# cce = majors.find_one({"name": "Computer and Communication Engineering"})
+# print(cce)
 
-majors.update_one(myquery, {"$set": {"core": newvalues}})
+eece210 = Course(courses, {"num": '210'})
+print(eece210)
 '''
+#eece_course = courses.find_one({"num": '210'})
+#myquery = {"name": "Electrical and Computer Engineering"}
+#newvalues = cce["core"]
+#newvalues[0] = eece_course["_id"]
+
+#majors.update_one(myquery, {"$set": {"core": newvalues}})
+
 dblist = myclient.list_database_names()
 
 print(dblist)

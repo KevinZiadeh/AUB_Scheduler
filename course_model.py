@@ -1,17 +1,14 @@
 class Course:
-    #get info from mysql
+    #get info from mongodb
     def __init__(self, db, query):
-        print(query.split())
-        db.execute("SHOW TABLES")
-
-        for x in db:
-            print(x)
-        #get request to mysql
-#        self.department = department
-#        self.major = major
-#        self.number = number
-#        self.minors = minors
-#        self.prerequesites = prerequesites
+        this = db.find_one(query)
+        #get request to mongodb
+        self.department = this["department"]
+        self.major = this["major"]
+        self.num = this["num"]
+        self.minors = this["minors"]
+        self.prerequesites = this["prerequisites"]
+        self.tracks = this["tracks"]
 
     def get_Minors(self):
         return self.minors
@@ -19,6 +16,8 @@ class Course:
     def get_Prerequisites(self):
         return self.prerequesites
 
-    def __str__(self):
-        print(self.major + " " + self.number)
+    def get_Tracks(self):
+        return self.tracks
 
+    def __str__(self):
+        return (str(self.major) + " " + str(self.num))

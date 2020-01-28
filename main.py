@@ -9,7 +9,7 @@ courses = mydb["courses"]
 # cce = majors.find_one({"name": "Computer and Communication Engineering"})
 # print(cce)
 
-eece210 = Course(courses, {"num": '210'})
+eece210 = Course(courses, {"_id": "eece210"})
 print(eece210)
 '''
 #eece_course = courses.find_one({"num": '210'})

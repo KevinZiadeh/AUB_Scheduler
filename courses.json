@@ -1,0 +1,9 @@
+{"_id":"eece210","department":"Electrical and Computer Engineering","num":"210","major":"eece","minors":[""],"prerequisites":[""],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece290","department":"Electrical and Computer Engineering","num":"290","major":"eece","minors":[""],"prerequisites":["eece210"],"corequisites":[""],"tracks\r":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece230","department":"Electrical and Computer Engineering","num":"230","major":"eece","minors":[""],"prerequisites":[""],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece231","department":"Electrical and Computer Engineering","num":"231","major":"eece","minors":[""],"prerequisites":[""],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"feaa200","department":"Faculty of Engineering and Architecture","num":"200","major":"feaa","minors":[""],"prerequistes":[""],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece310","department":"Electrical and Computer Engineering","num":"310","major":"eece","minors":[""],"prerequisites":["eece290","feaa200"],"corequisites":["feaa200"],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece310L","department":"Electrical and Computer Engineering","num":"310L","major":"eece","minors":[""],"prerequisites":[""],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"1"}}
+{"_id":"eece311","department":"Electrical and Computer Engineering","num":"311","major":"eece","minors":[""],"prerequisites":["eece310"],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}
+{"_id":"eece312","department":"Electrical and Computer Engineering","num":"312","major":"eece","minors":[""],"prerequisites":["eece210"],"corequisites":[""],"tracks":[""],"equivalent":[""],"credit":{"$numberInt":"3"}}

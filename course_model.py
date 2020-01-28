@@ -1,14 +1,17 @@
 class Course:
-    #get info from mongodb
+
     def __init__(self, db, query):
-        this = db.find_one(query)
         #get request to mongodb
+        this = db.find_one(query)
         self.department = this["department"]
         self.major = this["major"]
         self.num = this["num"]
         self.minors = this["minors"]
         self.prerequesites = this["prerequisites"]
+        self.corequisites = this["corequisites"]
         self.tracks = this["tracks"]
+        self.equivalent = this["equivalent"]
+        self.credit = this["credit"]
 
     def get_Minors(self):
         return self.minors

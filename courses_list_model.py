@@ -29,7 +29,7 @@ class Courses_list:
     '''
 
     #get list of missing core courses
-    def get_missing_core_courses(self, major):
+    def get_missing_core_courses(self, major, list_courses):
         '''
         returns tuple with:
         1: list of courses in courses_id that are not in this db
@@ -38,11 +38,11 @@ class Courses_list:
         list_remaining = [] #list of remaining courses that are not core courses
         cur_major = self.db_major.find_one({"_id" : major})
         list_core = cur_major["core"] #list of all core courses
-        missing = {"list": [], "message" : ""}
+        missing = {"list": [], "message" : "", "attribute": "core"}
         num_courses = cur_major["number_courses"]["core"].to_decimal() #number of credits that we should get
         matches = 0
 
-        for single_course_id in self.courses_id:
+        for single_course_id in list_courses:
             i = self.get_index(list_core, single_course_id)
             if i == -1:
                 list_remaining.append(single_course_id)
@@ -60,7 +60,7 @@ class Courses_list:
         return (list_remaining, missing)
 
     #get list of missing core lab courses
-    def get_missing_core_lab_courses(self, major,):
+    def get_missing_core_lab_courses(self, major, list_courses):
         '''
         returns tuple with:
         1: list of courses in courses_id that are not in this db
@@ -69,16 +69,16 @@ class Courses_list:
         list_remaining = [] #list of remaining courses that are not core courses
         cur_major = self.db_major.find_one({"_id" : major})
         list_core = cur_major["core_lab"] #list of all core_lab courses
-        missing = {"list": [], "message" : ""}
+        missing = {"list": [], "message" : "", "attribute": "core_lab"}
         num_courses = cur_major["number_courses"]["core_lab"].to_decimal() #number of credits that we should get
         matches = 0
 
-        for id in self.courses_id:
-            if id[-1] != "L":
+        for single_course_id in list_courses:
+            if single_course_id[-1] != "L":
                 continue
-            i = self.get_index(list_core, id)
+            i = self.get_index(list_core, single_course_id)
             if i == -1:
-                list_remaining.append(id)
+                list_remaining.append(single_course_id)
             else:
                 del list_core[i]
                 matches += int(self.db_courses.find_one({"_id": single_course_id})["credit"])
@@ -92,7 +92,7 @@ class Courses_list:
         return (list_remaining, missing)
 
     #get list of missing science elective courses
-    def get_missing_science_elective_courses(self, major):
+    def get_missing_science_elective_courses(self, major, list_courses):
         '''
         returns tuple with:
         1: list of courses in courses_id that are not in this db
@@ -101,17 +101,17 @@ class Courses_list:
         list_remaining = [] #list of remaining courses that are not science_elective courses
         cur_major = self.db_major.find_one({"_id" : major})
         list_core = cur_major["science_elective"] #list of all science_elective courses
-        missing = {"list": [], "message" : ""}
+        missing = {"list": [], "message" : "", "attribute": "science_elective"}
         num_courses = cur_major["number_courses"]["science_elective"].to_decimal() #number of credits that we should get
         matches = 0
 
-        for id in self.courses_id:
-            i = self.get_index(list_core, id)
+        for single_course_id in list_courses:
+            i = self.get_index(list_core, single_course_id)
             if i == -1:
-                list_remaining.append(id)
+                list_remaining.append(single_course_id)
             else:
                 del list_core[i]
-                matches += int(self.db_courses.find_one({"_id": id})["credit"])
+                matches += int(self.db_courses.find_one({"_id": single_course_id})["credit"])
                 if matches == num_courses:
                     missing["list"] = [""]
                     missing["message"] = "You took all necessary science elective courses"
@@ -122,7 +122,7 @@ class Courses_list:
         return (list_remaining, missing)
 
     #get list of missing math elective courses
-    def get_missing_math_elective_courses(self, major):
+    def get_missing_math_elective_courses(self, major, list_courses):
         '''
         returns tuple with:
         1: list of courses in courses_id that are not in this db
@@ -131,19 +131,19 @@ class Courses_list:
         list_remaining = [] #list of remaining courses that are not math_elective courses
         cur_major = self.db_major.find_one({"_id" : major})
         list_core = cur_major["math_elective"] #list of all math_elective courses
-        missing = {"list": [], "message" : ""}
+        missing = {"list": [], "message" : "", "attribute": "math_elective"}
         num_courses = cur_major["number_courses"]["math_elective"].to_decimal() #number of credits that we should get
         matches = 0
 
-        for id in self.courses_id:
-            if id[0] != "m":
+        for single_course_id in list_courses:
+            if single_course_id[0] != "m":
                 continue
-            i = self.get_index(list_core, id)
+            i = self.get_index(list_core, single_course_id)
             if i == -1:
-                list_remaining.append(id)
+                list_remaining.append(single_course_id)
             else:
                 del list_core[i]
-                matches += int(self.db_courses.find_one({"_id": id})["credit"])
+                matches += int(self.db_courses.find_one({"_id": single_course_id})["credit"])
                 if matches == num_courses:
                     missing["list"] = [""]
                     missing["message"] = "You took all math elective necessary courses"
@@ -154,7 +154,7 @@ class Courses_list:
         return (list_remaining, missing)
 
     #get list of missing restricted courses
-    def get_missing_restricted_courses(self, major):
+    def get_missing_restricted_courses(self, major, list_courses):
                 '''
                 returns tuple with:
                 1: list of courses in courses_id that are not in this db
@@ -163,19 +163,17 @@ class Courses_list:
                 list_remaining = [] #list of remaining courses that are not restricted courses
                 cur_major = self.db_major.find_one({"_id" : major})
                 list_core = cur_major["restricted"] #list of all restricted courses
-                missing = {"list": [], "message" : ""}
+                missing = {"list": [], "message" : "", "attribute": "restricted"}
                 num_courses = cur_major["number_courses"]["restricted"].to_decimal() #number of credits that we should get
                 matches = 0
 
-                for id in self.courses_id:
-                    if id[-1] != "e":
-                        continue
-                    i = self.get_index(list_core, id)
+                for single_course_id in list_courses:
+                    i = self.get_index(list_core, single_course_id)
                     if i == -1:
-                        list_remaining.append(id)
+                        list_remaining.append(single_course_id)
                     else:
                         del list_core[i]
-                        matches += int(self.db_courses.find_one({"_id": id})["credit"])
+                        matches += int(self.db_courses.find_one({"_id": single_course_id})["credit"])
                         if matches == num_courses:
                             missing["list"] = [""]
                             missing["message"] = "You took all necessary restricted elective courses"
@@ -186,7 +184,7 @@ class Courses_list:
                 return (list_remaining, missing)
 
     #get list of missing restricted lab courses
-    def get_missing_restricted_lab_courses(self, major):
+    def get_missing_restricted_lab_courses(self, major, list_courses):
         '''
         returns tuple with:
         1: list of courses in courses_id that are not in this db
@@ -195,19 +193,19 @@ class Courses_list:
         list_remaining = [] #list of remaining courses that are not restricted_lab courses
         cur_major = self.db_major.find_one({"_id" : major})
         list_core = cur_major["restricted_lab"] #list of all restricted_lab courses
-        missing = {"list": [], "message" : ""}
+        missing = {"list": [], "message" : "", "attribute": "restricted_lab"}
         num_courses = cur_major["number_courses"]["restricted_lab"].to_decimal() #number of credits that we should get
         matches = 0
 
-        for id in self.courses_id:
-            if id[0] != "e" and id[-1] != "L":
+        for single_course_id in list_courses:
+            if single_course_id[-1] != "L":
                 continue
-            i = self.get_index(list_core, id)
+            i = self.get_index(list_core, single_course_id)
             if i == -1:
-                list_remaining.append(id)
+                list_remaining.append(single_course_id)
             else:
                 del list_core[i]
-                matches += int(self.db_courses.find_one({"_id": id})["credit"])
+                matches += int(self.db_courses.find_one({"_id": single_course_id})["credit"])
                 if matches == num_courses:
                     missing["list"] = [""]
                     missing["message"] = "You took all necessary restricted lab courses"
@@ -216,6 +214,26 @@ class Courses_list:
         missing["list"] = list_core
         missing["message"] = "You still need to take " + str(num_courses-matches) + " credits"
         return (list_remaining, missing)
+
+    #general get remaining courses that calls other get_remaining_xxx
+    def remaining_courses(self, major):
+        temp_list = []
+        temp_missing = {}
+        missing_array = []
+        (temp_list, temp_missing) = self.get_missing_core_courses(major, self.courses_id)
+        missing_array.append(temp_missing)
+        (temp_list, temp_missing) = self.get_missing_core_lab_courses(major, temp_list)
+        missing_array.append(temp_missing)
+        (temp_list, temp_missing) = self.get_missing_science_elective_courses(major, temp_list)
+        missing_array.append(temp_missing)
+        (temp_list, temp_missing) = self.get_missing_restricted_courses(major, temp_list)
+        missing_array.append(temp_missing)
+        (temp_list, temp_missing) = self.get_missing_math_elective_courses(major, temp_list)
+        missing_array.append(temp_missing)
+        (temp_list, temp_missing) = self.get_missing_restricted_lab_courses(major, temp_list)
+        missing_array.append(temp_missing)
+        return missing_array
+
 
     def __str__(self):
         s = ""
@@ -241,7 +259,29 @@ class Courses_list:
                 s += (course + ", ")
         return s[:-2] #remove trailing comma and space
 
-
+        def remaining_courses_print(self, list_courses):
+            s = ""
+            for course in list_courses:
+                if len(course) > 8:
+                    this_list = course.split("|") #checking for "or" courses
+                    for e in this_list:
+                        if e[-1] == "x": #checking for specific level courses
+                            s += ("any " + e[:5] + "00 level course ")
+                        elif len(e) < 5:
+                            s += ("any " + e + " course ")
+                        else:
+                            s += (e + " ")
+                        if e != this_list[-1]:
+                            s += "or "
+                        else:
+                            s += ", "
+                elif course[-1] == "x":
+                    s += ("any " + course[4] + "00 level " + course[:4] + " course, ")
+                elif len(course) < 5:
+                    s += ("any " + course + " course, ")
+                else:
+                    s += (course + ", ")
+            return s[:-2] #remove trailing comma and space
 
     def or_confusion_resolution(self, list_search):
         NL = []
@@ -257,6 +297,8 @@ class Courses_list:
         return list_search
 
     def get_index(self, list_search, course_id):
+        if list_search[0] == "":
+            return -1
         for i in range(len(list_search)):
             if len(list_search[i]) > 9:
                 search = list_search[i].split("|")

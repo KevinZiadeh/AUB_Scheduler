@@ -1,16 +1,32 @@
 import pymongo
 from course_model import Course
+from courses_list_model import Courses_list
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["AUB"]
-majors = mydb["majors"]
-courses = mydb["courses"]
+majors_db = mydb["majors"]
+courses_db = mydb["courses"]
 
-# cce = majors.find_one({"name": "Computer and Communication Engineering"})
-# print(cce)
+# eece210 = Course(courses_db, {"_id": "eece210"})
+# print(eece210)
 
-eece210 = Course(courses, {"_id": "eece210"})
-print(eece210)
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece491", "eece691"])
+
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "eece310L"])
+# list.get_number_credits()
+
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "eece310L", "f", "math219"])
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "math218", "math211", "f"])
+# v = list.get_missing_core_courses("cce")
+# print(v[0])
+
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "phys217", "eece310L"])
+# v = list.get_missing_science_elective_courses("cce")
+# print(v[0])
+
+# list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "phys217", "eece310L", "eece3xx", "eece4xx", "arab", "math218|math219"])
+# print(list)
+
 '''
 #eece_course = courses.find_one({"num": '210'})
 #myquery = {"name": "Electrical and Computer Engineering"}

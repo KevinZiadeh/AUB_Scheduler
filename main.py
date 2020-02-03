@@ -24,8 +24,9 @@ courses_db = mydb["courses"]
 # v = list.get_missing_science_elective_courses("cce")
 # print(v[0])
 
-list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "eece310L"])
+list = Courses_list(courses_db, majors_db, ["eece210", "eece290", "eece310L", "eece331", "eece332", "eece412L"])
 print(list.remaining_courses("cce"))
+# print(list)
 
 '''
 #eece_course = courses.find_one({"num": '210'})

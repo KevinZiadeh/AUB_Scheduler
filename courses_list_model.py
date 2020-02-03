@@ -75,7 +75,9 @@ class Courses_list:
 
         for single_course_id in list_courses:
             if single_course_id[-1] != "L":
+                list_remaining.append(single_course_id)
                 continue
+            # print(single_course_id)
             i = self.get_index(list_core, single_course_id)
             if i == -1:
                 list_remaining.append(single_course_id)
@@ -137,6 +139,7 @@ class Courses_list:
 
         for single_course_id in list_courses:
             if single_course_id[0] != "m":
+                list_remaining.append(single_course_id)
                 continue
             i = self.get_index(list_core, single_course_id)
             if i == -1:
@@ -232,12 +235,14 @@ class Courses_list:
         missing_array.append(temp_missing)
         (temp_list, temp_missing) = self.get_missing_restricted_lab_courses(major, temp_list)
         missing_array.append(temp_missing)
-        return missing_array
-
+        return self.remaining_courses_print(missing_array)
 
     def __str__(self):
+        return self.list_print(self.courses_id)
+
+    def list_print(self, courses_id):
         s = ""
-        for course in self.courses_id:
+        for course in courses_id:
             if len(course) > 8:
                 this_list = course.split("|") #checking for "or" courses
                 for e in this_list:
@@ -246,9 +251,9 @@ class Courses_list:
                     elif len(e) < 5:
                         s += ("any " + e + " course ")
                     else:
-                        s += (e + " ")
+                        s += (e)
                     if e != this_list[-1]:
-                        s += "or "
+                        s += " or "
                     else:
                         s += ", "
             elif course[-1] == "x":
@@ -259,29 +264,15 @@ class Courses_list:
                 s += (course + ", ")
         return s[:-2] #remove trailing comma and space
 
-        def remaining_courses_print(self, list_courses):
-            s = ""
-            for course in list_courses:
-                if len(course) > 8:
-                    this_list = course.split("|") #checking for "or" courses
-                    for e in this_list:
-                        if e[-1] == "x": #checking for specific level courses
-                            s += ("any " + e[:5] + "00 level course ")
-                        elif len(e) < 5:
-                            s += ("any " + e + " course ")
-                        else:
-                            s += (e + " ")
-                        if e != this_list[-1]:
-                            s += "or "
-                        else:
-                            s += ", "
-                elif course[-1] == "x":
-                    s += ("any " + course[4] + "00 level " + course[:4] + " course, ")
-                elif len(course) < 5:
-                    s += ("any " + course + " course, ")
-                else:
-                    s += (course + ", ")
-            return s[:-2] #remove trailing comma and space
+    def remaining_courses_print(self, missing_array):
+        s = ""
+        for i in range(len(missing_array)):
+            e = missing_array[i]
+            s += e["attribute"].capitalize() + ": " + e["message"]
+            if e["list"][0] != "":
+                s += " from : " + self.list_print(e["list"])
+            s += "\n"
+        return s
 
     def or_confusion_resolution(self, list_search):
         NL = []
